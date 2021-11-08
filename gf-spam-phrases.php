@@ -4,7 +4,7 @@ Plugin Name: Gravity Forms Spam Phrases
 Plugin URI:
 Update URI: gf-spam-phrases
 Description: Create a list of spammy phrases to blocklist Gravity Forms entries as spam
-Version: 1.0.0
+Version: 1.0.1
 Author: WebAware
 Author URI: https://shop.webaware.com.au/
 Text Domain: gf-spam-phrases
@@ -37,7 +37,7 @@ define('GF_SPAMMY_FILE', __FILE__);
 define('GF_SPAMMY_ROOT', dirname(__FILE__) . '/');
 define('GF_SPAMMY_NAME', basename(dirname(__FILE__)) . '/' . basename(__FILE__));
 define('GF_SPAMMY_MIN_PHP', '7.3');
-define('GF_SPAMMY_VERSION', '1.0.0');
+define('GF_SPAMMY_VERSION', '1.0.1');
 
 require GF_SPAMMY_ROOT . 'includes/functions-global.php';
 require GF_SPAMMY_ROOT . 'includes/class.Requires.php';

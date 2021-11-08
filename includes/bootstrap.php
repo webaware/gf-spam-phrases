@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 }
 
 // minimum versions required
-const MIN_VERSION_GF		= '2.0';
+const MIN_VERSION_GF		= '2.4.18';
 
 /**
  * kick start the plugin

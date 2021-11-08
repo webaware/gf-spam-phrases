@@ -13,6 +13,7 @@ if (!defined('ABSPATH')) {
 class AddOn extends GFAddOn {
 
 	protected $blocklist = null;
+	protected $found_phrase;
 
 	/**
 	 * static method for getting the instance of this singleton object
@@ -49,6 +50,7 @@ class AddOn extends GFAddOn {
 
 		add_action('init', [$this, 'lateLocalise'], 9);							// priority 9 to get in before init_admin()
 		add_filter('gform_entry_is_spam', [$this, 'entryCheckSpam'], 10, 3);	// priority 50 to let other plugins check first
+		add_filter('gform_notes_avatar', [$this, 'notes_avatar'], 10, 2);
 	}
 
 	/**
@@ -86,6 +88,14 @@ class AddOn extends GFAddOn {
 	 */
 	protected function get_svg_icon() {
 		return file_get_contents(GF_SPAMMY_ROOT . '/static/images/menu-icon.svg');
+	}
+
+	/**
+	 * set the entry note avatar image
+	 * @return string
+	 */
+	public function note_avatar() {
+		return plugins_url('static/images/menu-icon.svg', GF_SPAMMY_FILE);
 	}
 
 	/**
@@ -143,6 +153,7 @@ class AddOn extends GFAddOn {
 			// check value for spammy phrases, stop looking if spam found
 			if ($this->isSpammy($field, $entry)) {
 				$is_spam = true;
+				add_action('gform_entry_created', [$this, 'addNote']);
 				break;
 			}
 		}
@@ -170,11 +181,23 @@ class AddOn extends GFAddOn {
 				$this->log_debug("form: {$entry['form_id']}, entry: {$entry['id']}, field: {$field->id}");
 				$this->log_debug("found: $s");
 				$this->log_debug("value: $value");
+				$this->found_phrase = $s;
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	/**
+	 * add a note to the entry to show that it was marked as spam by this add-on
+	 * @param array $entry
+	 */
+	public function addNote($entry) {
+		if (rgar($entry, 'status') === 'spam' && $this->found_phrase) {
+			$msg = sprintf(__('Detected spam phrase: "%s"', 'gf-spam-phrases'), $this->found_phrase);
+			$this->add_note($entry['id'], $msg, 'success');
+		}
 	}
 
 }
