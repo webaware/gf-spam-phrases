@@ -1,0 +1,6 @@
+/.svn
+/.vscode
+/.dist
+/bin
+/node_modules
+/vendor
