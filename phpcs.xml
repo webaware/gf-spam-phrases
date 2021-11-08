@@ -19,6 +19,7 @@
 	<rule ref="Generic.Debug.ClosureLinter" />
 	<rule ref="Generic.Files.LineEndings" />
 	<rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
+	<rule ref="Generic.Metrics.CyclomaticComplexity" />
 	<rule ref="Generic.Metrics.NestingLevel" />
 	<rule ref="Generic.NamingConventions.ConstructorName" />
 	<rule ref="Generic.PHP.DisallowShortOpenTag.Found" />
@@ -37,12 +38,7 @@
 		</properties>
 	</rule>
 
-	<rule ref="Generic.Metrics.CyclomaticComplexity">
-		<exclude-pattern>includes/class.EDDUpdater.php</exclude-pattern>
-	</rule>
-
 	<rule ref="Generic.WhiteSpace.ArbitraryParenthesesSpacing">
-		<exclude-pattern>includes/class.EDDUpdater.php</exclude-pattern>
 		<properties>
 			<property name="ignoreNewlines" value="true" />
 		</properties>
