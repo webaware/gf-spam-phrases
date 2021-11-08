@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Gravity Forms Spam Phrases plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity Forms Spam Phrases 1.0.0\n"
+"Project-Id-Version: Gravity Forms Spam Phrases 1.0.1\n"
 "Report-Msgid-Bugs-To: translate@webaware.com.au\n"
 "Last-Translator: WebAware <translate@webaware.com.au>\n"
 "Language-Team: WebAware <translate@webaware.com.au>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-11-08T15:05:30+11:00\n"
+"POT-Creation-Date: 2021-11-08T18:10:09+11:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Translation-Home: https://translate.webaware.com.au/glotpress/projects/gf-spam-phrases/\n"
@@ -31,23 +31,27 @@ msgstr ""
 msgid "https://shop.webaware.com.au/"
 msgstr ""
 
-#: includes/class.AddOn.php:58
+#: includes/class.AddOn.php:60
 msgctxt "add-on full title"
 msgid "Spam Phrases"
 msgstr ""
 
-#: includes/class.AddOn.php:59
+#: includes/class.AddOn.php:61
 msgctxt "add-on short title"
 msgid "Spam Phrases"
 msgstr ""
 
-#: includes/class.AddOn.php:103
+#: includes/class.AddOn.php:113
 msgctxt "feed field name"
 msgid "Bock list"
 msgstr ""
 
-#: includes/class.AddOn.php:104
+#: includes/class.AddOn.php:114
 msgid "List words or phrases one per line. URLs are accepted too. Try not to catch things that might not be spam!"
+msgstr ""
+
+#: includes/class.AddOn.php:198
+msgid "Detected spam phrase: \"%s\""
 msgstr ""
 
 #: includes/class.Plugin.php:74
