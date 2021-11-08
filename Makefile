@@ -20,7 +20,7 @@ all:
 
 zip: $(ZIP)
 
-$(ZIP): $(SRC_PHP) images/* languages/* changelog.md
+$(ZIP): $(SRC_PHP) static/images/* languages/* changelog.md
 	$(LINT_PHP)
 	$(SNIFF_PHP)
 	rm -rf .dist
