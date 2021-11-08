@@ -146,7 +146,7 @@ class Updater {
 			delete_site_transient(self::TRANSIENT_UPDATE_INFO);
 
 			$url = add_query_arg(['v' => time()], self::URL_UPDATE_INFO);
-			$response = wp_remote_get($url, ['timeout' => 60]);
+			$response = wp_remote_get($url, ['timeout' => 10]);
 
 			if (is_wp_error($response)) {
 				return false;
