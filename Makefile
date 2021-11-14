@@ -6,7 +6,7 @@ I18N_TEAM			= WebAware <$(I18N_EMAIL)>
 I18N_HOME			= https://translate.webaware.com.au/glotpress/projects/gf-spam-phrases/
 
 ZIP					= .dist/$(PKG_NAME)-$(PKG_VERSION).zip
-FIND_PHP			= find . -path ./vendor -prune -o -path ./node_modules -prune -o -name '*.php'
+FIND_PHP			= find . -path ./vendor -prune -o -path ./node_modules -prune -o -path './.*' -o -name '*.php'
 LINT_PHP			= $(FIND_PHP) -exec php -l '{}' \; >/dev/null
 SNIFF_PHP			= vendor/bin/phpcs -ps
 SRC_PHP				= $(shell $(FIND_PHP) -print)
@@ -21,8 +21,6 @@ all:
 zip: $(ZIP)
 
 $(ZIP): $(SRC_PHP) static/images/* languages/* changelog.md
-	$(LINT_PHP)
-	$(SNIFF_PHP)
 	rm -rf .dist
 	mkdir .dist
 	git archive HEAD --prefix=$(PKG_NAME)/ --format=zip -9 -o $(ZIP)
@@ -42,6 +40,8 @@ languages/$(PKG_NAME).pot: $(SRC_PHP)
 	wp i18n make-pot . --skip-js --domain=$(PKG_NAME) \
 		--exclude=.dist/.*,lib/.*,languages/.*,node_modules/.*,tests/.*,vendor/.* \
 		--headers='{"X-Translation-Home":"$(I18N_HOME)","Report-Msgid-Bugs-To":"$(I18N_EMAIL)","Last-Translator":"$(I18N_TEAM)","Language-Team":"$(I18N_TEAM)"}'
+	# need to commit new files before building .zip
+	@false
 
 # code linters
 
