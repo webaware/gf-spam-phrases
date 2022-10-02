@@ -16,10 +16,11 @@ class Updater {
 	const URL_UPDATE_INFO			= 'https://updates.webaware.net.au/gf-spam-phrases/latest.json';
 
 	public function __construct() {
+		$this->maybeClearPluginInfo();
+
 		// check for plugin updates
 		add_filter('pre_set_site_transient_update_plugins', [$this, 'checkPluginUpdates']);
 		add_filter('plugins_api', [$this, 'getPluginInfo'], 10, 3);
-		add_action('plugins_loaded', [$this, 'clearPluginInfo']);
 		add_action('admin_init', [$this, 'maybeShowChangelog']);
 
 		// on multisite, must add new version notification ourselves...
@@ -77,7 +78,7 @@ class Updater {
 	/**
 	 * if user asks to force an update check, clear our cached plugin info
 	 */
-	public function clearPluginInfo() {
+	public function maybeClearPluginInfo() {
 		global $pagenow;
 
 		if (!empty($_GET['force-check']) && !empty($pagenow) && $pagenow === 'update-core.php') {
