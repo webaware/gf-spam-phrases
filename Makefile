@@ -1,16 +1,13 @@
-PKG_NAME			= gf-spam-phrases
-PKG_VERSION			= $(shell sed -rn 's/^Version: (.*)/\1/p' $(PKG_NAME).php)
+PKG_NAME			:= gf-spam-phrases
+PKG_VERSION			:= $(shell sed -rn 's/^Version: (.*)/\1/p' $(PKG_NAME).php)
 
-I18N_EMAIL			= translate@webaware.com.au
-I18N_TEAM			= WebAware <$(I18N_EMAIL)>
-I18N_HOME			= https://translate.webaware.com.au/glotpress/projects/gf-spam-phrases/
+I18N_EMAIL			:= translate@webaware.com.au
+I18N_TEAM			:= WebAware <$(I18N_EMAIL)>
+I18N_HOME			:= https://translate.webaware.com.au/glotpress/projects/gf-spam-phrases/
 
-ZIP					= .dist/$(PKG_NAME)-$(PKG_VERSION).zip
-FIND_PHP			= find . -path ./vendor -prune -o -path ./node_modules -prune -o -path './.*' -o -name '*.php'
-LINT_PHP			= $(FIND_PHP) -exec php -l '{}' \; >/dev/null
-SNIFF_PHP			= vendor/bin/phpcs -ps
-SNIFF_PHP_5			= $(SNIFF_PHP) --standard=phpcs-5.2.xml
-SRC_PHP				= $(shell $(FIND_PHP) -print)
+ZIP					:= .dist/$(PKG_NAME)-$(PKG_VERSION).zip
+FIND_PHP			:= find . -path ./vendor -prune -o -path ./node_modules -prune -o -path './.*' -o -name '*.php'
+SRC_PHP				:= $(shell $(FIND_PHP) -print)
 
 all:
 	@echo please see Makefile for available builds / commands
@@ -50,6 +47,6 @@ lint: lint-php
 
 lint-php:
 	@echo PHP lint...
-	@$(LINT_PHP)
-	@$(SNIFF_PHP)
-	@$(SNIFF_PHP_5)
+	@$(FIND_PHP) -exec php7.4 -l '{}' \; >/dev/null
+	@vendor/bin/phpcs -ps
+	@vendor/bin/phpcs -ps --standard=phpcs-5.2.xml
