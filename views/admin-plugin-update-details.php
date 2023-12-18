@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 ?>
-<tr class="active plugin-update-tr" data-slug="<?= esc_attr($plugin_slug); ?>" data-plugin="<?= $plugin_name; ?>">
+<tr class="active plugin-update-tr" data-slug="<?= $plugin_slug ?>" data-plugin="<?= $update_file ?>">
 	<td colspan="<?= $wp_list_table->get_column_count(); ?>" class="plugin-update colspanchange">
 		<div class="update-message notice inline notice-warning notice-alt">
 			<p><?php

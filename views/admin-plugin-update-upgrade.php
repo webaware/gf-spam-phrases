@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 ?>
-<tr class="active plugin-update-tr" data-slug="<?= esc_attr($plugin_slug); ?>" data-plugin="<?= $plugin_name; ?>">
+<tr class="active plugin-update-tr" id="<?= $plugin_slug ?>-update" data-slug="<?= $plugin_slug ?>" data-plugin="<?= $update_file ?>">
 	<td colspan="<?= $wp_list_table->get_column_count(); ?>" class="plugin-update colspanchange">
 		<div class="update-message notice inline notice-warning notice-alt">
 			<p><?php
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
 						esc_attr( sprintf( translate( 'View %1$s version %2$s details' ), $plugin_name, $new_version ) )
 					),
 					$new_version,
-					esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $plugin_slug, 'upgrade-plugin_' . $plugin_slug ) ),
+					esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' . $update_file ), 'upgrade-plugin_' . $update_file ) ),
 					sprintf( 'class="update-link" aria-label="%s"',
 						/* translators: %s: plugin name */
 						esc_attr( sprintf( translate( 'Update %s now' ), $plugin_name ) )

@@ -18,6 +18,7 @@ add_action('plugins_loaded', function() {
 
 	if (is_admin() || wp_doing_cron() || (defined('WP_CLI') && WP_CLI)) {
 		require GF_SPAMMY_ROOT . 'includes/class.Updater.php';
-		new Updater();
+		new Updater(GF_SPAMMY_NAME, GF_SPAMMY_FILE, 'gf-spam-phrases',
+			'https://updates.webaware.net.au/gf-spam-phrases/latest.json');
 	}
 }, 5);

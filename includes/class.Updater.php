@@ -10,22 +10,33 @@ if (!defined('ABSPATH')) {
 /**
  * manage automatic updates and notifications
  */
-class Updater {
+final class Updater {
 
-	const TRANSIENT_UPDATE_INFO		= 'gf_spam_phrases_update_info';
-	const URL_UPDATE_INFO			= 'https://updates.webaware.net.au/gf-spam-phrases/latest.json';
+	private string $name;			// plugin name in WordPress
+	private string $file;			// plugin base file path
+	private string $slug;			// slug for plugin
+	private string $update_name;	// name of update transient
+	private string $update_url;		// URL for update information
+	private $plugin_data;			// cached plugin data from plugin file header
 
-	public function __construct() {
+	public function __construct(string $name, string $file, string $slug, string $update_url) {
+		$this->name			= $name;
+		$this->file			= $file;
+		$this->slug			= $slug;
+		$this->update_name	= "{$this->slug}_update_info";
+		$this->update_url	= $update_url;
+
 		$this->maybeClearPluginInfo();
 
 		// check for plugin updates
 		add_filter('pre_set_site_transient_update_plugins', [$this, 'checkPluginUpdates']);
 		add_filter('plugins_api', [$this, 'getPluginInfo'], 10, 3);
-		add_action('admin_init', [$this, 'maybeShowChangelog']);
+		add_action('admin_init', [$this, 'showChangelog']);
 
-		// on multisite, must add new version notification ourselves...
+		// on multisite, must add new version notification ourselves and override link for View details
 		if (is_multisite() && !is_network_admin()) {
-			add_action('after_plugin_row_' . GF_SPAMMY_NAME, [$this, 'showUpdateNotification'], 10, 2);
+			add_action('after_plugin_row_' . $this->name, [$this, 'showUpdateNotification'], 10, 2);
+			add_filter('network_admin_url', [$this, 'maybeFixDetailsLink'], 10, 2);
 		}
 	}
 
@@ -54,7 +65,7 @@ class Updater {
 			$update->package		= $latest->download_link;
 			$update->upgrade_notice	= $latest->upgrade_notice;
 
-			$plugins->response[GF_SPAMMY_NAME] = $update;
+			$plugins->response[$this->name] = $update;
 		}
 
 		return $plugins;
@@ -62,27 +73,27 @@ class Updater {
 
 	/**
 	 * return plugin info for update pages, plugins list
-	 * @param boolean $false
+	 * @param boolean $result
 	 * @param array $action
 	 * @param object $args
 	 * @return bool|object
 	 */
-	public function getPluginInfo($false, $action, $args) {
-		if (isset($args->slug) && $args->slug === basename(GF_SPAMMY_NAME, '.php')) {
+	public function getPluginInfo($result, $action, $args) {
+		if (isset($args->slug) && $args->slug === basename($this->name, '.php')) {
 			return $this->getLatestVersionInfo();
 		}
 
-		return $false;
+		return $result;
 	}
 
 	/**
 	 * if user asks to force an update check, clear our cached plugin info
 	 */
-	public function maybeClearPluginInfo() {
+	public function maybeClearPluginInfo() : void {
 		global $pagenow;
 
 		if (!empty($_GET['force-check']) && !empty($pagenow) && $pagenow === 'update-core.php') {
-			delete_site_transient(self::TRANSIENT_UPDATE_INFO);
+			delete_site_transient($this->update_name);
 		}
 	}
 
@@ -91,7 +102,7 @@ class Updater {
 	 * @param string $file
 	 * @param array $plugin
 	 */
-	public function showUpdateNotification($file, $plugin) {
+	public function showUpdateNotification($file, $plugin) : void {
 		if (!current_user_can('update_plugins')) {
 			return;
 		}
@@ -106,18 +117,46 @@ class Updater {
 		$info = $this->getLatestVersionInfo();
 
 		if ($info && version_compare($current['Version'], $info->new_version, '<')) {
-			$changelog_link = self_admin_url("index.php?gf_spammy_changelog=1&plugin={$info->slug}&slug={$info->slug}&TB_iframe=true");
+			$changelog_link = $this->getChangelogLink();
 
 			// build a plugin list row, with update notification
 			$wp_list_table = _get_list_table('WP_Plugins_List_Table');
 			$plugin_name   = esc_html($info->name);
 			$plugin_slug   = esc_html($info->slug);
+			$update_file   = esc_html(plugin_basename($this->file));
 			$new_version   = esc_html($info->new_version);
 
 			$view   = empty($info->download_link) ? 'details' : 'upgrade';
 
-			include GF_SPAMMY_ROOT . "views/admin-plugin-update-{$view}.php";
+			$root = dirname($this->file);
+			include "{$root}/views/admin-plugin-update-{$view}.php";
 		}
+	}
+
+	/**
+	 * maybe fix the "View details" link for the plugin, when on multisite
+	 * @param string $url
+	 * @param string $path
+	 * @return string
+	 */
+	public function maybeFixDetailsLink($url, $path) {
+		if (strpos($path, 'plugin-install.php?') === 0 && strpos($path, "plugin={$this->slug}&") !== false) {
+			$url = $this->getChangelogLink();
+		}
+		return $url;
+	}
+
+	/**
+	 * get link for the changelog pop-up
+	 */
+	private function getChangelogLink() : string {
+		$args = [
+			'tab'						=> 'plugin-information',
+			'plugin'					=> urlencode($this->slug),
+			'section'					=> 'changelog',
+			'TB_iframe'					=> 'true',
+		];
+		return add_query_arg($args, self_admin_url('plugin-install.php'));
 	}
 
 	/**
@@ -125,11 +164,11 @@ class Updater {
 	 * @return array
 	 */
 	protected function getPluginData() {
-		if (empty($this->pluginData)) {
-			$this->pluginData = get_plugin_data(GF_SPAMMY_FILE);
+		if (empty($this->plugin_data)) {
+			$this->plugin_data = get_plugin_data($this->file);
 		}
 
-		return $this->pluginData;
+		return $this->plugin_data;
 	}
 
 	/**
@@ -140,13 +179,13 @@ class Updater {
 	protected function getLatestVersionInfo($cache = true) {
 		$info = false;
 		if ($cache) {
-			$info = get_site_transient(self::TRANSIENT_UPDATE_INFO);
+			$info = get_site_transient($this->update_name);
 		}
 
 		if (empty($info)) {
-			delete_site_transient(self::TRANSIENT_UPDATE_INFO);
+			delete_site_transient($this->update_name);
 
-			$url = add_query_arg(['v' => time()], self::URL_UPDATE_INFO);
+			$url = add_query_arg(['v' => time()], $this->update_url);
 			$response = wp_remote_get($url, ['timeout' => 10]);
 
 			if (is_wp_error($response)) {
@@ -164,7 +203,7 @@ class Updater {
 					}
 					$info->sections = $sections;
 
-					set_site_transient(self::TRANSIENT_UPDATE_INFO, $info, HOUR_IN_SECONDS * 6);
+					set_site_transient($this->update_name, $info, HOUR_IN_SECONDS * 6);
 				}
 			}
 		}
@@ -175,23 +214,22 @@ class Updater {
 	/**
 	 * if the changelog was requested, show it
 	 */
-	public function maybeShowChangelog() {
-		if (!empty($_REQUEST['gf_spammy_changelog']) && !empty($_REQUEST['plugin']) && !empty($_REQUEST['slug'])) {
-			$this->showChangelog();
+	public function showChangelog() : void {
+		if (empty($_REQUEST['plugin']) || empty($_REQUEST['tab'])) {
+			return;
 		}
-	}
 
-	/**
-	 * pop-up the plugin changelog
-	 */
-	public function showChangelog() {
+		if ($_REQUEST['plugin'] !== $this->slug || $_REQUEST['tab'] !== 'plugin-information') {
+			return;
+		}
+
 		if (!current_user_can('update_plugins')) {
 			wp_die(translate('You do not have sufficient permissions to update plugins for this site.'), translate('Error'), ['response' => 403]);
 		}
 
-		global $tab, $body_id;
+		global $tab, $body_id, $hook_suffix;
 		$body_id = $tab = 'plugin-information';
-		$_REQUEST['section'] = 'changelog';
+		$hook_suffix = 'plugin-install-php';
 
 		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 
