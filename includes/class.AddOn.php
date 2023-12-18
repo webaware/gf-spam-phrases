@@ -195,6 +195,7 @@ class AddOn extends GFAddOn {
 	 */
 	public function addNote($entry) {
 		if (rgar($entry, 'status') === 'spam' && $this->found_phrase) {
+			/* translators: %s = the suspected spam phrase found in the email */
 			$msg = sprintf(__('Detected spam phrase: "%s"', 'gf-spam-phrases'), $this->found_phrase);
 			$this->add_note($entry['id'], $msg, 'success');
 		}

@@ -1,17 +1,17 @@
-# Copyright (C) 2021 WebAware
+# Copyright (C) 2023 WebAware
 # This file is distributed under the same license as the Gravity Forms Spam Phrases plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity Forms Spam Phrases 1.0.1\n"
+"Project-Id-Version: Gravity Forms Spam Phrases 1.1.0\n"
 "Report-Msgid-Bugs-To: translate@webaware.com.au\n"
 "Last-Translator: WebAware <translate@webaware.com.au>\n"
 "Language-Team: WebAware <translate@webaware.com.au>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-11-08T18:10:09+11:00\n"
+"POT-Creation-Date: 2023-12-18T07:38:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.5.0\n"
+"X-Generator: WP-CLI 2.9.0\n"
 "X-Translation-Home: https://translate.webaware.com.au/glotpress/projects/gf-spam-phrases/\n"
 "X-Domain: gf-spam-phrases\n"
 
@@ -50,7 +50,8 @@ msgstr ""
 msgid "List words or phrases one per line. URLs are accepted too. Try not to catch things that might not be spam!"
 msgstr ""
 
-#: includes/class.AddOn.php:198
+#. translators: %s = the suspected spam phrase found in the email
+#: includes/class.AddOn.php:199
 msgid "Detected spam phrase: \"%s\""
 msgstr ""
 
