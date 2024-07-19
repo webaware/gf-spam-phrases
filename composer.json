@@ -1,7 +1,11 @@
 {
+	"name": "mattradford/gf-spam-phrases",
+    "description": "Keyword blocklist for Gravity Forms",
+    "type": "library",
+    "license": "gpl",
 	"require-dev": {
 		"phpcompatibility/php-compatibility": "*",
-		"phpcsstandards/php_codesniffer": "*",
+		"squizlabs/php_codesniffer": "*",
 		"phpcsstandards/phpcsextra": "*"
 	},
 	"prefer-stable" : true,
