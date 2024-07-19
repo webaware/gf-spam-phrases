@@ -110,7 +110,7 @@ class AddOn extends GFAddOn {
 
 					[
 						'name'				=> 'blocklist',
-						'label'				=> _x('Bock list', 'feed field name', 'gf-spam-phrases'),
+						'label'				=> _x('Block list', 'feed field name', 'gf-spam-phrases'),
 						'description'		=> __('List words or phrases one per line. URLs are accepted too. Try not to catch things that might not be spam!', 'gf-spam-phrases'),
 						'type'				=> 'textarea',
 					],
