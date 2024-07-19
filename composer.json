@@ -1,7 +1,11 @@
 {
+	"name": "webaware/gf-spam-phrases",
+    "description": "Keyword blocklist for Gravity Forms",
+    "type": "plugin",
+    "license": "gpl",
 	"require-dev": {
 		"phpcompatibility/php-compatibility": "*",
-		"phpcsstandards/php_codesniffer": "*",
+		"squizlabs/php_codesniffer": "*",
 		"phpcsstandards/phpcsextra": "*"
 	},
 	"prefer-stable" : true,
