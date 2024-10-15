@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### 1.1.1, 2024-10-15
+
+* fixed: spelling mistake on form feed in the admin; bock! bock! bock! 🐔
+
 ### 1.1.0, 2023-12-18
 
 * changed: requires PHP 7.4 or later
