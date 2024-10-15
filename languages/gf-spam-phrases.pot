@@ -1,33 +1,37 @@
-# Copyright (C) 2023 WebAware
+# Copyright (C) 2024 WebAware
 # This file is distributed under the same license as the Gravity Forms Spam Phrases plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity Forms Spam Phrases 1.1.0\n"
+"Project-Id-Version: Gravity Forms Spam Phrases 1.1.1\n"
 "Report-Msgid-Bugs-To: translate@webaware.com.au\n"
 "Last-Translator: WebAware <translate@webaware.com.au>\n"
 "Language-Team: WebAware <translate@webaware.com.au>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-12-18T07:38:58+00:00\n"
+"POT-Creation-Date: 2024-10-15T07:09:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.9.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Translation-Home: https://translate.webaware.com.au/glotpress/projects/gf-spam-phrases/\n"
 "X-Domain: gf-spam-phrases\n"
 
 #. Plugin Name of the plugin
+#: gf-spam-phrases.php
 msgid "Gravity Forms Spam Phrases"
 msgstr ""
 
 #. Description of the plugin
+#: gf-spam-phrases.php
 msgid "Create a list of spammy phrases to blocklist Gravity Forms entries as spam"
 msgstr ""
 
 #. Author of the plugin
+#: gf-spam-phrases.php
 msgid "WebAware"
 msgstr ""
 
 #. Author URI of the plugin
+#: gf-spam-phrases.php
 msgid "https://shop.webaware.com.au/"
 msgstr ""
 
@@ -43,7 +47,7 @@ msgstr ""
 
 #: includes/class.AddOn.php:113
 msgctxt "feed field name"
-msgid "Bock list"
+msgid "Block list"
 msgstr ""
 
 #: includes/class.AddOn.php:114
